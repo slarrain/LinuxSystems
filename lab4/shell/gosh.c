@@ -46,11 +46,7 @@ int main() {
        function.  Otherwise, exit the program
     */
     if (retval == 0) {
-			continue;
-      /* Problem 2
-	 simple_fork_command(&command_a);
-      */
-
+	 		simple_fork_command(&command_a);
     } else if (retval == 1) {
       exit(0);
     }
@@ -99,7 +95,7 @@ int simple_accept_input(struct command_t *cmd_a) {
 	char *temp;
   temp = strtok (input, " \n");
 	//
-	printf("temp-->%s\n", temp);
+	//printf("temp-->%s\n", temp);
 	if (temp==NULL) {
 		return (2);
 	}
@@ -108,14 +104,14 @@ int simple_accept_input(struct command_t *cmd_a) {
 
 		cmd_a->args[cmd_a->num_args] = temp;
 		cmd_a->num_args+=1;
-    temp = strtok (NULL, " ");
+    temp = strtok (NULL, " \n");
 		//printf("%d\n", 3);
   }
 	//printf("%d\n", 4);
 	char *arg0 = cmd_a->args[0];
 	//printf("%d\n", 5);
 	char * ex = {"exit\0"};
-	printf("%s%s\n", arg0, ex);
+	//printf("%s%s\n", arg0, ex);
 
 	if (strcmp(arg0, ex)==0) {
 		//printf("%d\n", 6);
@@ -129,7 +125,28 @@ int simple_accept_input(struct command_t *cmd_a) {
 /* Problem 2: write a simple fork/exec/wait procedure that executes
    the command described in the passed in 'cmd' pointer. */
 int simple_fork_command(struct command_t *cmd) {
-  return(0);
+
+		pid_t pid;
+		int stat_val, child_pid;
+
+    pid = fork();
+    switch(pid)
+    {
+    case -1:
+			printf("There was an error creating the child process. Exiting...");
+      exit(1);
+    case 0:
+			execvp (cmd->args[0], cmd->args);
+      break;
+    default:
+
+			child_pid = wait(&stat_val);
+			if (child_pid<0) {
+				printf("There was an error executing the command. Please try again\n");
+			}
+      break;
+    }
+	return(0);
 }
 
 /* Problem 3: set up all of your signal actions here */
