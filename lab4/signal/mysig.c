@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <inttypes.h>
 
 int n_sigint = 0;
 int maxstops = 0;
@@ -44,8 +45,7 @@ void fsigint(int sig)
 
 void sigusr(int sig)
 {
-	printf("Roger that. The Signal SIGUSR1 has been received. \
-			We will proceed accordingly \n");
+	printf("Roger that. The Signal SIGUSR1 has been received. We will proceed accordingly \n");
 }
 
 void usage () {
@@ -61,7 +61,8 @@ int main(int argc, char *argv[])
 
   	if (argc==2) {
 		int n = atoi(argv[1]);
-	  	if (!(n>=0)) {
+	  	//printf("atoi = %d\n", n);
+	  	if (!(n>0)) {
 		  usage();
 		  }
 		else {
