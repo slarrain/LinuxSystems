@@ -9,14 +9,13 @@
 #include <errno.h>
 #include <sys/wait.h>
 #include <fcntl.h>
+#include <string.h>
 
 #include "gosh.h"
 
 extern int errno;
-
-main() {
-
-  int retval;
+char input[1024];
+int main() {
 
   struct command_t command_a;
 
@@ -26,8 +25,6 @@ main() {
 
   while(1) {
 
-    retval = init_command(&command_a);
-
     printf("gosh> ");
 
     /* this getchar() function is just here so that the shell 'works'
@@ -35,6 +32,7 @@ main() {
        before you start working on either of the two funtions below
        for input processing */
     //getchar();
+		int retval = init_command(&command_a);
 
     /* Problem 1
        retval = simple_accept_input(&command_a);
@@ -48,7 +46,7 @@ main() {
        function.  Otherwise, exit the program
     */
     if (retval == 0) {
-
+			continue;
       /* Problem 2
 	 simple_fork_command(&command_a);
       */
@@ -95,12 +93,37 @@ int print_command(struct command_t *cmd, const char *tag) {
    inputs 'exit', return a 1.  If the user inputs nothing (\n), return
    a value > 1.  If the user inputs somthing else, return a 0. */
 int simple_accept_input(struct command_t *cmd_a) {
-	char temp[1024];
-	scanf ("%s", temp);
-	printf("string is %s\n", temp);
-	cmd_a->args[cmd_a->num_args] = temp;
-	cmd_a->num_args++;
-  return(0);
+
+	fgets (input, 1024, stdin);
+	//printf("%s\n", input);
+	char *temp;
+  temp = strtok (input, " \n");
+	//
+	printf("temp-->%s\n", temp);
+	if (temp==NULL) {
+		return (2);
+	}
+  while (temp != NULL)  {
+		//printf("%d\n", 2);
+
+		cmd_a->args[cmd_a->num_args] = temp;
+		cmd_a->num_args+=1;
+    temp = strtok (NULL, " ");
+		//printf("%d\n", 3);
+  }
+	//printf("%d\n", 4);
+	char *arg0 = cmd_a->args[0];
+	//printf("%d\n", 5);
+	char * ex = {"exit\0"};
+	printf("%s%s\n", arg0, ex);
+
+	if (strcmp(arg0, ex)==0) {
+		//printf("%d\n", 6);
+		return (1);
+	}
+	else {
+		//printf("%d\n", 7);
+		return(0); }
 }
 
 /* Problem 2: write a simple fork/exec/wait procedure that executes
