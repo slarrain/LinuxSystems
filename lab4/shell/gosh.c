@@ -107,6 +107,10 @@ int simple_accept_input(struct command_t *cmd_a) {
     temp = strtok (NULL, " \n");
 		//printf("%d\n", 3);
   }
+
+	//Sets next element of args to NULL
+	cmd_a->args[cmd_a->num_args] = NULL;
+
 	//printf("%d\n", 4);
 	char *arg0 = cmd_a->args[0];
 	//printf("%d\n", 5);
@@ -127,8 +131,8 @@ int simple_accept_input(struct command_t *cmd_a) {
 int simple_fork_command(struct command_t *cmd) {
 
 		pid_t pid;
-		int stat_val, child_pid;
-
+		int stat_val, res;
+		printf("Running command\n-------------------\n");
     pid = fork();
     switch(pid)
     {
@@ -136,16 +140,26 @@ int simple_fork_command(struct command_t *cmd) {
 			printf("There was an error creating the child process. Exiting...");
       exit(1);
     case 0:
-			execvp (cmd->args[0], cmd->args);
+			res = execvp (cmd->args[0], cmd->args);
+			//printf("%d\n", res);
+			if (res == -1){
+				printf("ERROR: There was an error executing the command: %s\n", cmd->args[0]);
+				exit(EXIT_FAILURE);
+			}
       break;
     default:
 
-			child_pid = wait(&stat_val);
-			if (child_pid<0) {
-				printf("There was an error executing the command. Please try again\n");
-			}
       break;
     }
+		if (pid) {
+
+			wait(&stat_val);
+			printf("-------------------\n");
+      if(WIFEXITED(stat_val))
+      	printf("Command Returned Exit Code %d\n", WEXITSTATUS(stat_val));
+      else
+        printf("Command terminated abnoramlly\n");
+		}
 	return(0);
 }
 
