@@ -91,11 +91,8 @@ int print_command(struct command_t *cmd, const char *tag) {
 int simple_accept_input(struct command_t *cmd_a) {
 
 	fgets (input, 1024, stdin);
-	//printf("%s\n", input);
-	//
-	//
-	// MYENV case
 
+	// ENV VARIABLE CASE
 	char *var_s = strchr (input, '=');
 	if (var_s!=NULL){
 		/*
@@ -117,6 +114,7 @@ int simple_accept_input(struct command_t *cmd_a) {
 		cmd_a->args[1]="define new variable: success";
 		cmd_a->num_args=2;
 	}
+
 
 
 	char *temp;
@@ -198,6 +196,36 @@ int simple_fork_command(struct command_t *cmd) {
 						cmd->args[1] = getenv(&cmd->args[1][1]);
 					}
 				}
+				int redirection=0;
+				for (int i=0; i<cmd->num_args; i++) {
+					char c = cmd->args[i][0];
+					if (c==62){
+						redirection = i;
+						break;
+					}
+				}
+				//If there is redirection
+				if (redirection) {
+					// IF there is just one redirection
+					if (cmd->num_args >= redirection+2) {
+						int fd = open(cmd->args[redirection+1],O_WRONLY | O_CREAT,
+													S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
+						if (fd!=-1)
+							printf("dup file handle: success\n");
+						dup2 (fd, 1);
+						close(fd);
+
+					}
+
+					if ((cmd->num_args > redirection+2) && strcmp (cmd->args[redirection+2], "2>&1") == 0){
+						dup2 (1, 2);
+						//close(1);
+					}
+					// We just want it to execute the commands before the redirection
+					cmd->args[redirection] = NULL;
+
+				}
+
 				//printf("ENV var in Child SLE is %s\n", getenv("SLE"));
 				res = execvp (cmd->args[0], cmd->args);
 				//execl ("echo", "$SLE", NULL);
