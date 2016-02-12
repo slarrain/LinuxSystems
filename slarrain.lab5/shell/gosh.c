@@ -179,7 +179,13 @@ int simple_fork_command(struct command_t *cmd) {
 					exit(0);
 				}
 				else {
-					printf("change dir: FAILURE\n");
+					// There is an error when the path has something different than
+					// only lowercase letters. It returns -1 setting this else, but
+					// chdir() executes succesfully nevertheless.
+					// Seems like a bug from chdir()
+					perror( cmd->args[1] );
+					printf("change dir: FAILURE %s\n", cmd->args[1]);
+
 					exit(EXIT_FAILURE);
 				}
 			}

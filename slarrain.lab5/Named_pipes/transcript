@@ -1,0 +1,20 @@
+reader:
+santiago@linux-htpc:~/github/LinuxSystems/slarrain.lab5/Named_pipes$ ./my_npipe_reader
+/tmp/mypipe already exists, Using it
+Waiting for input...Got it: hello world
+Waiting for input...Got it: foober goober
+Exiting
+santiago@linux-htpc:~/github/LinuxSystems/slarrain.lab5/Named_pipes$
+
+
+writer:
+santiago@linux-htpc:~/github/LinuxSystems/slarrain.lab5/Named_pipes$ ./my_npipe_writer
+Opening named pipe: /tmp/mypipe
+Enter Input: hello world
+Writing buffer to pipe...done
+Enter Input: foober goober
+Writing buffer to pipe...done
+Enter Input: exit
+Exiting
+santiago@linux-htpc:~/github/LinuxSystems/slarrain.lab5/Named_pipes$
+

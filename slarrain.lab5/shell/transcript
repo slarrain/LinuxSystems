@@ -1,0 +1,59 @@
+santiago@linux-htpc:~/github/LinuxSystems/slarrain.lab5/shell$ make
+gcc -Wall gosh.c -o gosh
+santiago@linux-htpc:~/github/LinuxSystems/slarrain.lab5/shell$ ./gosh
+gosh> cd /usr/lib
+c1 0: cd
+c1 1: /usr/lib
+Running command
+-------------------
+change dir: success
+-------------------
+Command Returned Exit Code 0
+gosh> pwd
+c1 0: pwd
+Running command
+-------------------
+/usr/lib
+-------------------
+Command Returned Exit Code 0
+gosh> MYVAR='All work and no play makes Jack a dull boy'
+c1 0: echo
+c1 1: define new variable: success
+c1 2: MYVAR
+Running command
+-------------------
+define new variable: success MYVAR
+-------------------
+Command Returned Exit Code 0
+gosh> echo $MYVAR
+c1 0: echo
+c1 1: $MYVAR
+Running command
+-------------------
+'All work and no play makes Jack a dull boy'
+
+-------------------
+Command Returned Exit Code 0
+
+
+gosh> sh redirect.sh > results.log 2>&1
+c1 0: sh
+c1 1: redirect.sh
+c1 2: >
+c1 3: results.log
+c1 4: 2>&1
+Running command
+-------------------
+dup file handle: success
+-------------------
+Command Returned Exit Code 0
+gosh> cat results.log
+c1 0: cat
+c1 1: results.log
+Running command
+-------------------
+this goes to stdout
+this goes to stderr
+-------------------
+Command Returned Exit Code 0
+gosh> 
