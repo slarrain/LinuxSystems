@@ -4,5 +4,5 @@ struct com {
 	char message[256];
 };
 
-char posix_potato [BUFSIZ];
+void conv(char *msg, int size);
 
