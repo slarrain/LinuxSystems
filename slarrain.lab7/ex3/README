@@ -1,0 +1,18 @@
+
+1.
+Remove the 0<*shelf requisite. It can go below zero. It does go below 0. The ratio depends
+on the number of consumers.
+
+2.
+Add semaphores.
+Added a semaphore to the consumer and the producer. The producer add 1 to the value when it adds
+1 to the shelf. The consumer decreases one to the value when it takes one from the shelf.
+With a shelf of 15, the beavior is not the expected. Numbers go way beyond zero, and the should't
+do that (although the printed number is the shelf that CAN go to zero). I think there
+possible are some race conditions going on.
+
+If I add sleep(1) to both while loops, the beavior is the expected. It nevers goes below
+zero and it performs as expected when adding more consumers and more producer and changing
+the balance (longer waits fot the semaphore).
+
+
