@@ -1,0 +1,34 @@
+
+1.
+Remove the 0<*shelf requisite. It can go below zero. It does go below 0. The ratio depends
+on the number of consumers.
+
+2.
+Add semaphores. And more producers
+Added a semaphore to the consumer and the producer. The producer add 1 to the value when it adds
+1 to the shelf. The consumer decreases one to the value when it takes one from the shelf.
+With a shelf of 15, the beavior is not the expected. Numbers go way beyond zero, and the should't
+do that (although the printed number is the counter that CAN go below zero). I think there
+possible are some race conditions going on.
+
+If I add sleep(1) to both while loops, the beavior is the expected. It nevers goes below
+zero and it performs as expected when adding more consumers and more producer and changing
+the balance (longer waits fot the semaphore).
+
+3.
+Removed top limit for producers. Used semaphores instead.
+Did not work as expected.
+
+4.
+I realized I was doing everything wrong.
+Implemented a binary semaphore that uses the same structure on both the consumer and
+the producer.
+It decrements the semaphore before decrementing or incrementing the counter on the shelf.
+That is, it locks before reading and writing on the shared memory and it releases after
+that.
+It works as expected, with the expected behavior from increasing the number of consumers
+and producers. I experimented with different numbers of maximum products on the shelf,
+going up to 400.
+
+
+
