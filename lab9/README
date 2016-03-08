@@ -1,0 +1,54 @@
+lab9 - Santiago Larrain
+
+Lab 9 is built over lab8. It implements pthreads and a mutex.
+
+Here is lab8 Readme:
+
+lab8 - Santiago Larrain
+
+Usage:
+-----
+
+$ make
+Compiles the executables of server and client
+
+$ make clean
+Deletes both executables
+
+$ ./server [PORT]
+Starts the server. Optional argument defines the port number. Default is 1066
+because of the Battle of Hastings.
+
+$ ./client 127.0.0.1 port
+Starts the client. It needs to specify the port as the first argument (has not
+been tested outside a LAN) and the port as the second one. No defaults here.
+
+Heuristic
+---------
+
+Following the suggestion on the lab8 instructions, the program checks with all 5
+vowel possibilities in every vowel of the word.
+For example:
+Enter word: bot
+Checks for: bat, bet, bit, bot, but. And returns them if any of them exist:
+bat
+bet
+bit
+but
+
+Enter word: boit
+Checks for: bait, beit, biit, boit, buit, boat, boet, boit, boot, bout.
+bait
+boat
+boot
+bout
+
+Enter word: reciive
+The word reciive is spelled incorrectly
+receive
+
+It suggests a maximum of 10 words. None is none is found.
+
+Dictionary
+----------
+Is provided in the folder. The same used by Mark in class.
