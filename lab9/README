@@ -2,6 +2,8 @@ lab9 - Santiago Larrain
 
 Lab 9 is built over lab8. It implements pthreads and a mutex.
 
+You can exit a client by typing "-exit".
+
 Here is lab8 Readme:
 
 lab8 - Santiago Larrain
