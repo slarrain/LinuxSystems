@@ -1,0 +1,31 @@
+all: main
+
+# Which compiler
+CC = gcc
+
+# Where are include files kept
+INCLUDE = .
+
+CFLAGS = -c -Wall
+
+# Local Libraries
+MYLIB = mylib.a
+
+main: main.o $(MYLIB)
+	$(CC) -o main main.o $(MYLIB)
+
+
+$(MYLIB): hello.o here.o bye.o
+	ar r mylib.a hello.o here.o bye.o
+main.o: main.c mylib.h
+	$(CC) $(CFLAGS) main.c
+hello.o: hello.c mylib.h
+	$(CC) $(CFLAGS) hello.c
+here.o: here.c mylib.h
+	$(CC) $(CFLAGS) here.c
+bye.o: bye.c mylib.h
+	$(CC) $(CFLAGS) bye.c
+
+clean:
+	rm -f main.o hello.o here.o bye.o mylib.a main
+	

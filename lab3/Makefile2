@@ -1,0 +1,34 @@
+all: main
+
+# Which compiler
+CC = gcc
+
+# Where are include files kept
+INCLUDE = .
+
+CFLAGS = -c -Wall -fPIC
+
+# Local Libraries
+MYLIB = libmylib.so.5
+
+main: main.o $(MYLIB)
+	$(CC) -Wl,-rpath,$(INCLUDE) -o main main.o libmylib.so
+
+
+$(MYLIB): hello.o here.o bye.o
+	$(CC) -shared -Wl,-soname,$(MYLIB) -o libmylib.so.5.1.10 hello.o here.o bye.o
+	ln -sf libmylib.so.5.1.10 libmylib.so.5.1
+	ln -sf libmylib.so.5.1 libmylib.so.5
+	ln -sf libmylib.so.5 libmylib.so
+main.o: main.c mylib.h
+	$(CC) $(CFLAGS) main.c
+hello.o: hello.c mylib.h
+	$(CC) $(CFLAGS) hello.c
+here.o: here.c mylib.h
+	$(CC) $(CFLAGS) here.c
+bye.o: bye.c mylib.h
+	$(CC) $(CFLAGS) bye.c
+
+clean:
+	rm -f main.o hello.o here.o bye.o main libmylib.s*
+	
